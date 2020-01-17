@@ -3,6 +3,8 @@ FROM debian:9
 VOLUME ["/var/log", "/var/spool/postfix"]
 EXPOSE 25
 
+LABEL maintainer="Yusuph Wickama <yusuph.wickama@wickerlabs.com>"
+
 ENV HOST=localhost \
     DOMAIN=localdomain \
     INET_PROTOCOLS=ipv4 \
@@ -11,6 +13,8 @@ ENV HOST=localhost \
     MAIL_RELAY_PORT='' \
     MAIL_RELAY_USER='' \
     MAIL_RELAY_PASS='' \
+    MAIL_FROM_EMAIL='' \
+    MAIL_FROM_NAME='' \
     MAIL_VIRTUAL_FORCE_TO='' \
     MAIL_VIRTUAL_ADDRESSES='' \
     MAIL_VIRTUAL_DEFAULT='' \

@@ -78,6 +78,14 @@ if [ -n "$MAIL_VIRTUAL_DEFAULT" ] && [ -n "$MAIL_VIRTUAL_ADDRESSES" ]; then
     postmap /etc/postfix/virtual
 fi
 
+# Define from address with sender name
+if [ -n "$MAIL_FROM_EMAIL" ] && [ -n "$MAIL_FROM_NAME" ]; then
+    _add_line "sender_canonical_maps = static" "sender_canonical_maps = static:$MAIL_FROM_EMAIL" /etc/postfix/main.cf
+    _add_line "$MAIL_FROM_EMAIL" "/^From:[[:space:]]+(.*)/ REPLACE From: \"$MAIL_FROM_NAME\" <$MAIL_FROM_EMAIL>" /etc/postfix/header_checks
+    postmap /etc/postfix/header_checks
+    _add_line "smtp_header_checks = regexp:" "smtp_header_checks = regexp:/etc/postfix/header_checks" /etc/postfix/main.cf
+fi
+
 # Define canonical and non-canonical sender domain
 if [ -n "$MAIL_CANONICAL_DOMAINS" ]; then
     for domain in $MAIL_CANONICAL_DOMAINS; do
