@@ -50,13 +50,12 @@ RUN chmod a+rx /usr/local/bin/* && \
     postconf -e mynetworks_style=subnet && \
     postconf -e smtp_helo_name=\$myhostname.\$mydomain && \
     postconf -e virtual_maps='hash:/etc/postfix/virtual, regexp:/etc/postfix/virtual_regexp' && \
-    postconf -e sender_canonical_maps=regexp:/etc/postfix/sender_canonical_regexp && \
+    postconf -e smtp_header_checks=regexp:/etc/postfix/header_checks && \
     postconf -e local_header_rewrite_clients=static:all && \
     postconf compatibility_level=2 && \
     postmap /etc/postfix/sasl_passwd && \
     postmap /etc/postfix/virtual_regexp && \
-    postmap /etc/postfix/virtual && \
-    postmap /etc/postfix/sender_canonical_regexp
+    postmap /etc/postfix/virtual
 
 ENTRYPOINT ["/usr/local/bin/dumb-init", "--", "/usr/local/bin/entrypoint"]
 CMD ["tail", "-f", "/var/log/mail.log"]
